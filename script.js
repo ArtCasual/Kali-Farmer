@@ -1,12 +1,12 @@
 const listsContainer = document.querySelector("[data-lists]");
 const newListForm = document.querySelector("[data-new-list-form]");
 const newListInput = document.querySelector("[data-new-list-input]");
+const clearTasksButton = document.querySelector("[data-clear-tasks-button]");
 const deleteListButton = document.querySelector("[data-delete-list-button]");
 const listDisplayContainer = document.querySelector(
   "[data-list-display-container]"
 );
 const listTitleElement = document.querySelector("[data-list-title]");
-
 const tasksContainer = document.querySelector("[data-tasks]");
 const taskTemplate = document.getElementById("task-template");
 const newTaskForm = document.querySelector("[data-new-task-form]");
@@ -25,6 +25,19 @@ listsContainer.addEventListener("click", (e) => {
   }
 });
 
+tasksContainer.addEventListener("click", (e) => {
+  if (e.target.tagName.toLowerCase() === "input") {
+    const selectedList = lists.find((list) => list.id === selectedListID);
+    const selectedTask = selectedList.tasks.find(
+      (task) => task.id === e.target.id
+    );
+    selectedTask.complete = e.target.checked;
+    save();
+  }
+});
+
+// NEW LIST FORM
+
 newListForm.addEventListener("submit", (e) => {
   e.preventDefault();
   const listName = newListInput.value;
@@ -34,6 +47,8 @@ newListForm.addEventListener("submit", (e) => {
   lists.push(list);
   saveAndRender();
 });
+
+// NEW TASK FORM
 
 newTaskForm.addEventListener("submit", (e) => {
   e.preventDefault();
@@ -45,6 +60,16 @@ newTaskForm.addEventListener("submit", (e) => {
   selectedList.tasks.push(task);
   saveAndRender();
 });
+
+// Clear Completed Tasks
+
+clearTasksButton.addEventListener("click", (e) => {
+  const selectedList = lists.find((list) => list.id === selectedListID);
+  selectedList.tasks = selectedList.tasks.filter((task) => !task.complete);
+  saveAndRender();
+});
+
+// Delete List
 
 deleteListButton.addEventListener("click", (e) => {
   lists = lists.filter((list) => list.id !== selectedListID);
@@ -77,6 +102,8 @@ function save() {
   localStorage.setItem(LOCAL_STORAGE_LIST_KEY, JSON.stringify(lists));
 }
 
+// RENDER FUNCTION
+
 function render() {
   clearElement(listsContainer);
   renderLists();
@@ -91,6 +118,8 @@ function render() {
   renderTasks(selectedList);
 }
 
+// RENDER TASKS FUNCTION
+
 function renderTasks(selectedList) {
   selectedList.tasks.forEach((task) => {
     const taskElement = document.importNode(taskTemplate.content, true);
@@ -103,6 +132,8 @@ function renderTasks(selectedList) {
     tasksContainer.appendChild(taskElement);
   });
 }
+
+// RENDER LISTS FUNCTION
 
 function renderLists() {
   lists.forEach((list) => {

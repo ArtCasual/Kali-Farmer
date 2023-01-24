@@ -1,8 +1,8 @@
 :root {
-  --clr-primary: rgb(61, 199, 54);
+  --clr-primary: rgb(92, 197, 87);
   --clr-light: #f4f4f4;
   --clr-dark: #333;
-  --clr-warning: rgb(99, 36, 36);
+  --clr-warning: rgb(203, 72, 72);
 }
 
 *,
@@ -11,6 +11,8 @@
   font-family: inherit;
   box-sizing: border-box;
 }
+
+/* GRID AREA */
 
 body {
   margin: 0;
@@ -24,9 +26,10 @@ body {
     "header header header" 0.2fr
     "...... lists ......" auto
     "...... active ......" auto/
-    1fr 1fr 1fr;
+    1fr 3fr 1fr;
 }
 
+/* GRID TITLE */
 .title {
   grid-area: header;
   text-align: center;
@@ -36,7 +39,8 @@ body {
   letter-spacing: 2px;
 }
 
-.all-tasks {
+/* GRID LISTS */
+.all-lists {
   grid-area: lists;
 }
 
@@ -64,7 +68,6 @@ form {
   background: 0;
   border: 0;
   padding: 0;
-  /* color: inherit; */
 }
 
 .btn.create {
@@ -149,10 +152,12 @@ form {
   font-weight: 700;
 }
 
+/* GRID ACTIVE */
 .todo-list {
   --spacer: 1rem;
   grid-area: active;
   background: var(--clr-light);
+  border-radius: 5px;
   color: var(--clr-dark);
   margin-bottom: 5rem;
 }
@@ -160,9 +165,10 @@ form {
 .todo-header {
   padding: var(--spacer);
   background: #e4e4e4;
+  border-radius: 5px;
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  /* justify-content: center; */
 }
 
 .list-title {
