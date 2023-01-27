@@ -36,8 +36,7 @@ tasksContainer.addEventListener("click", (e) => {
   }
 });
 
-// NEW LIST FORM
-
+// CREATE LIST
 newListForm.addEventListener("submit", (e) => {
   e.preventDefault();
   const listName = newListInput.value;
@@ -48,8 +47,7 @@ newListForm.addEventListener("submit", (e) => {
   saveAndRender();
 });
 
-// NEW TASK FORM
-
+// CREATE TASK
 newTaskForm.addEventListener("submit", (e) => {
   e.preventDefault();
   const taskName = newTaskInput.value;
@@ -61,30 +59,32 @@ newTaskForm.addEventListener("submit", (e) => {
   saveAndRender();
 });
 
-// Clear Completed Tasks
-
+// CLEAR COMPLETED TASKS
 clearTasksButton.addEventListener("click", (e) => {
   const selectedList = lists.find((list) => list.id === selectedListID);
   selectedList.tasks = selectedList.tasks.filter((task) => !task.complete);
   saveAndRender();
 });
 
-// Delete List
+// EDIT TASK BUTTON
 
+// DELETE LIST
 deleteListButton.addEventListener("click", (e) => {
   lists = lists.filter((list) => list.id !== selectedListID);
   selectedListID = null;
   saveAndRender();
 });
 
+// CREATE LIST FUNCTION
 function createList(name) {
   return {
-    id: Date.now().toString(),
+    id: (Date.now() + Math.random()).toString(),
     name: name,
     tasks: [],
   };
 }
 
+//CREATE TASK FUNCTION
 function createTask(name) {
   return {
     id: Date.now().toString(),
@@ -93,17 +93,24 @@ function createTask(name) {
   };
 }
 
+// CREATE MONTH PLAN (FOUR WEEKS)
+function createMonthPlan() {
+  for (let i = 1; i < 5; i++) {
+    let list = createList("WEEK " + i);
+    lists.push(list);
+  }
+}
+
+// SAVE FUNCTIONS
 function saveAndRender() {
   save();
   render();
 }
-
 function save() {
   localStorage.setItem(LOCAL_STORAGE_LIST_KEY, JSON.stringify(lists));
 }
 
 // RENDER FUNCTION
-
 function render() {
   clearElement(listsContainer);
   renderLists();
@@ -119,22 +126,47 @@ function render() {
 }
 
 // RENDER TASKS FUNCTION
-
 function renderTasks(selectedList) {
   selectedList.tasks.forEach((task) => {
     const taskElement = document.importNode(taskTemplate.content, true);
     const checkbox = taskElement.querySelector("input");
+    const inputEdit = taskElement.querySelector(".input-edit");
+    const editTaskButton = taskElement.querySelector("[data-edit-task-button]");
     checkbox.id = task.id;
     checkbox.checked = task.complete;
     const label = taskElement.querySelector("label");
     label.htmlFor = task.id;
-    label.append(task.name);
+    inputEdit.value = task.name;
+    editTaskButton.id = task.id;
+
+    // EDIT TASK
+    editTaskButton.addEventListener("click", (e) => {
+      // EDIT
+      if (editTaskButton.innerText === "edit") {
+        editTaskButton.innerText = "save";
+        inputEdit.removeAttribute("readonly");
+        inputEdit.style.pointerEvents = "auto";
+        inputEdit.focus();
+        // SAVE
+      } else {
+        editTaskButton.innerText = "edit";
+        inputEdit.setAttribute("readonly", "readonly");
+        inputEdit.style.pointerEvents = "none";
+        if (e.target.tagName.toLowerCase() === "button") {
+          const selectedList = lists.find((list) => list.id === selectedListID);
+          const selectedTask = selectedList.tasks.find(
+            (task) => task.id === e.target.id
+          );
+          selectedTask.name = inputEdit.value;
+          save();
+        }
+      }
+    });
     tasksContainer.appendChild(taskElement);
   });
 }
 
 // RENDER LISTS FUNCTION
-
 function renderLists() {
   lists.forEach((list) => {
     const listElement = document.createElement("li");
@@ -146,6 +178,7 @@ function renderLists() {
   });
 }
 
+// CLEAR ELEMENTS FUNCTION
 function clearElement(element) {
   while (element.firstChild) {
     element.removeChild(element.firstChild);
