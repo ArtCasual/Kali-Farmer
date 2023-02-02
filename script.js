@@ -17,7 +17,9 @@ const LOCAL_STORAGE_SELECTED_ID_LIST_KEY = "task.selectedIdLists";
 
 let lists = JSON.parse(localStorage.getItem(LOCAL_STORAGE_LIST_KEY)) || [];
 let selectedListID = localStorage.getItem(LOCAL_STORAGE_SELECTED_ID_LIST_KEY);
+let currentWeek = Math.trunc(new Date().getTime() / 1000 / 60 / 60 / 24 / 70);
 
+// SELECT LIST
 listsContainer.addEventListener("click", (e) => {
   if (e.target.tagName.toLowerCase() === "li") {
     selectedListID = e.target.dataset.listId;
@@ -25,6 +27,7 @@ listsContainer.addEventListener("click", (e) => {
   }
 });
 
+// SELECT TASK
 tasksContainer.addEventListener("click", (e) => {
   if (e.target.tagName.toLowerCase() === "input") {
     const selectedList = lists.find((list) => list.id === selectedListID);
@@ -44,6 +47,8 @@ newListForm.addEventListener("submit", (e) => {
   const list = createList(listName);
   newListInput.value = null;
   lists.push(list);
+  list.weekCreated = currentWeek + lists.indexOf(list);
+  console.log(list);
   saveAndRender();
 });
 
@@ -81,6 +86,7 @@ function createList(name) {
     id: (Date.now() + Math.random()).toString(),
     name: name,
     tasks: [],
+    weekCreated: currentWeek,
   };
 }
 
@@ -125,6 +131,32 @@ function render() {
   renderTasks(selectedList);
 }
 
+// EDIT TASK FUNCTION
+function editTask(editTaskButton, inputEdit) {
+  editTaskButton.addEventListener("click", (e) => {
+    // EDIT
+    if (editTaskButton.innerText === "edit") {
+      editTaskButton.innerText = "save";
+      inputEdit.removeAttribute("readonly");
+      inputEdit.style.pointerEvents = "auto";
+      inputEdit.focus();
+      // SAVE
+    } else {
+      editTaskButton.innerText = "edit";
+      inputEdit.setAttribute("readonly", "readonly");
+      inputEdit.style.pointerEvents = "none";
+      if (e.target.tagName.toLowerCase() === "button") {
+        const selectedList = lists.find((list) => list.id === selectedListID);
+        const selectedTask = selectedList.tasks.find(
+          (task) => task.id === e.target.id
+        );
+        selectedTask.name = inputEdit.value;
+        save();
+      }
+    }
+  });
+}
+
 // RENDER TASKS FUNCTION
 function renderTasks(selectedList) {
   selectedList.tasks.forEach((task) => {
@@ -138,30 +170,8 @@ function renderTasks(selectedList) {
     label.htmlFor = task.id;
     inputEdit.value = task.name;
     editTaskButton.id = task.id;
-
     // EDIT TASK
-    editTaskButton.addEventListener("click", (e) => {
-      // EDIT
-      if (editTaskButton.innerText === "edit") {
-        editTaskButton.innerText = "save";
-        inputEdit.removeAttribute("readonly");
-        inputEdit.style.pointerEvents = "auto";
-        inputEdit.focus();
-        // SAVE
-      } else {
-        editTaskButton.innerText = "edit";
-        inputEdit.setAttribute("readonly", "readonly");
-        inputEdit.style.pointerEvents = "none";
-        if (e.target.tagName.toLowerCase() === "button") {
-          const selectedList = lists.find((list) => list.id === selectedListID);
-          const selectedTask = selectedList.tasks.find(
-            (task) => task.id === e.target.id
-          );
-          selectedTask.name = inputEdit.value;
-          save();
-        }
-      }
-    });
+    editTask(editTaskButton, inputEdit);
     tasksContainer.appendChild(taskElement);
   });
 }
@@ -173,7 +183,9 @@ function renderLists() {
     listElement.dataset.listId = list.id;
     listElement.classList.add("list-name");
     listElement.innerText = list.name;
-    if (list.id === selectedListID) listElement.classList.add("active-list");
+    if (list.id === selectedListID) listElement.classList.add("select-list");
+    if (list.weekCreated === currentWeek)
+      listElement.classList.add("active-list");
     listsContainer.appendChild(listElement);
   });
 }
@@ -184,5 +196,5 @@ function clearElement(element) {
     element.removeChild(element.firstChild);
   }
 }
-
+console.log(currentWeek);
 render();

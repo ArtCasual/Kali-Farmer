@@ -38,19 +38,15 @@ body {
   letter-spacing: 2px;
 }
 
-/*LISTS */
-/* .all-lists {
-  margin: auto;
-} */
-
 .task-list {
   font-size: 1.2rem;
   line-height: 1.7;
   list-style: circle;
-  padding-left: 1.1em;
+  padding: 0;
 }
 .task-list > li {
   list-style: none;
+  /* text-align: center; */
 }
 
 .list-name {
@@ -119,7 +115,7 @@ form {
 }
 
 .new::placeholder {
-  opacity: 0.4;
+  opacity: 0.7;
 }
 
 .new:focus {
@@ -151,8 +147,11 @@ form {
 }
 
 .active-list {
-  font-weight: 700;
   background-color: var(--clr-secondary);
+}
+.select-list {
+  font-weight: 700;
+  /* background-color: var(--clr-secondary); */
 }
 
 /* GRID ACTIVE */
