@@ -17,7 +17,7 @@ const LOCAL_STORAGE_SELECTED_ID_LIST_KEY = "task.selectedIdLists";
 
 let lists = JSON.parse(localStorage.getItem(LOCAL_STORAGE_LIST_KEY)) || [];
 let selectedListID = localStorage.getItem(LOCAL_STORAGE_SELECTED_ID_LIST_KEY);
-let currentWeek = Math.trunc(new Date().getTime() / 1000 / 60 / 60 / 24 / 70);
+let currentWeek = Math.trunc(new Date().getTime() / 1000 / 60 / 60 / 24 / 7);
 
 // SELECT LIST
 listsContainer.addEventListener("click", (e) => {
@@ -188,6 +188,7 @@ function renderLists() {
       listElement.classList.add("active-list");
     listsContainer.appendChild(listElement);
   });
+  console.log;
 }
 
 // CLEAR ELEMENTS FUNCTION
