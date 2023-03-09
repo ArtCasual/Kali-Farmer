@@ -29,13 +29,44 @@ body {
   gap: 1rem;
 }
 
+.header {
+  min-width: 80vw;
+  display: flex;
+  width: max-content;
+  align-items: center;
+  justify-content: space-between;
+  align-self: auto;
+  position: relative;
+  gap: 1rem;
+}
+
+.header__logo {
+  width: 5rem;
+  height: 5rem;
+}
+
 /* TITLE */
-.title {
+.header__title {
   text-align: center;
   font-size: calc(3vw + 1rem);
   font-weight: 800;
   color: rgba(0, 0, 0, 0.1);
   letter-spacing: 2px;
+  opacity: 0;
+}
+.header__temp-icon {
+  color: wheat;
+}
+.header__temp-degree {
+  font-size: 1.3rem;
+  color: rgba(0, 0, 0, 0.7);
+}
+
+.weather__data {
+  gap: 0.3rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .task-list {
@@ -203,6 +234,15 @@ form {
 .task {
   position: relative;
   margin-bottom: 1.25em;
+}
+
+.task-mlLitre {
+  font-size: smaller;
+  margin-right: 12rem;
+}
+
+.input-edit {
+  max-width: 3rem;
 }
 
 .input-edit,

@@ -9,11 +9,30 @@
       rel="stylesheet"
     />
     <link rel="stylesheet" href="main.css" />
-    <script defer src="script.js"></script>
+    <script defer type="module" src="script.js"></script>
   </head>
 
   <body>
-    <h1 class="title">Kali Farmer</h1>
+    <header class="header">
+      <img
+        class="header__logo"
+        src="./assets/img/AristosKampourakisLogo.svg"
+        width="260"
+        height="260"
+        alt="AK logo"
+      />
+      <!-- <h1 class="header__title">Kali Farmer</h1> -->
+      <div class="weather__data">
+        <img
+          src=""
+          width="32"
+          height="32"
+          alt="weather-icon"
+          class="header__temp-icon"
+        />
+        <h2 class="header__temp-degree" data-temp-degree></h2>
+      </div>
+    </header>
 
     <div class="all-lists">
       <h2 class="task-list-title">Plan</h2>
@@ -53,7 +72,7 @@
               type="text"
               data-new-task-input
               class="new task"
-              placeholder="new task"
+              placeholder="ml/L water"
               aria-label="new task"
             />
             <button class="btn create" aria-label="create new task">+</button>
@@ -71,12 +90,14 @@
       </div>
     </div>
 
+    <!-- TEMPLATE FOR TASKS -->
     <template id="task-template">
       <div class="task">
         <input type="checkbox" />
         <label>
           <span class="custom-checkbox"></span>
-          <input type="text" class="input-edit" readonly />
+          <input type="text" class="input-edit" readonly maxlength="3" />
+          <span class="task-mlLitre">ml/L</span>
           <button class="btn edit" data-edit-task-button>edit</button>
         </label>
       </div>

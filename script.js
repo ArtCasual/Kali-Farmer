@@ -1,16 +1,21 @@
+import getWeatherData from "./components/weatherWidget.js";
+const currentWeatherIcon = document.querySelector(".header__temp-icon");
+const tempDegree = document.querySelector("[data-temp-degree");
+
 const listsContainer = document.querySelector("[data-lists]");
 const newListForm = document.querySelector("[data-new-list-form]");
 const newListInput = document.querySelector("[data-new-list-input]");
-const clearTasksButton = document.querySelector("[data-clear-tasks-button]");
 const deleteListButton = document.querySelector("[data-delete-list-button]");
 const listDisplayContainer = document.querySelector(
   "[data-list-display-container]"
 );
 const listTitleElement = document.querySelector("[data-list-title]");
+
 const tasksContainer = document.querySelector("[data-tasks]");
 const taskTemplate = document.getElementById("task-template");
 const newTaskForm = document.querySelector("[data-new-task-form]");
 const newTaskInput = document.querySelector("[data-new-task-input]");
+const clearTasksButton = document.querySelector("[data-clear-tasks-button]");
 
 const LOCAL_STORAGE_LIST_KEY = "task.lists";
 const LOCAL_STORAGE_SELECTED_ID_LIST_KEY = "task.selectedIdLists";
@@ -48,7 +53,6 @@ newListForm.addEventListener("submit", (e) => {
   newListInput.value = null;
   lists.push(list);
   list.weekCreated = currentWeek + lists.indexOf(list);
-  console.log(list);
   saveAndRender();
 });
 
@@ -114,6 +118,7 @@ function saveAndRender() {
 }
 function save() {
   localStorage.setItem(LOCAL_STORAGE_LIST_KEY, JSON.stringify(lists));
+  localStorage.setItem(LOCAL_STORAGE_SELECTED_ID_LIST_KEY, selectedListID);
 }
 
 // RENDER FUNCTION
@@ -188,7 +193,6 @@ function renderLists() {
       listElement.classList.add("active-list");
     listsContainer.appendChild(listElement);
   });
-  console.log;
 }
 
 // CLEAR ELEMENTS FUNCTION
@@ -197,5 +201,5 @@ function clearElement(element) {
     element.removeChild(element.firstChild);
   }
 }
-console.log(currentWeek);
 render();
+getWeatherData(tempDegree, currentWeatherIcon);
