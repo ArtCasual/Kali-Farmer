@@ -55,7 +55,7 @@ body {
   opacity: 0;
 }
 .header__temp-icon {
-  color: wheat;
+  margin-bottom: 10px;
 }
 .header__temp-degree {
   font-size: 1.3rem;
