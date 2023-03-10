@@ -1,5 +1,7 @@
 const API_KEY = "c1bb4d45b21ab0e08c268d9378516e88";
 
+console.log("it works");
+
 function getWeatherData(degree, icon) {
   navigator.geolocation.getCurrentPosition((location) => {
     let { latitude: lat, longitude: long } = location.coords;
